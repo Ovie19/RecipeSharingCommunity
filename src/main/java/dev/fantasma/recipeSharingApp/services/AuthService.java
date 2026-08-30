@@ -6,12 +6,13 @@ import dev.fantasma.recipeSharingApp.dtos.requests.RegisterUserRequest;
 import dev.fantasma.recipeSharingApp.dtos.responses.LoginResponse;
 import dev.fantasma.recipeSharingApp.dtos.responses.LogoutResponse;
 import dev.fantasma.recipeSharingApp.dtos.responses.RegisterUserResponse;
+import dev.fantasma.recipeSharingApp.exceptions.RecipeAppException;
 
 public interface AuthService {
-    RegisterUserResponse registerUser(RegisterUserRequest request);
+    RegisterUserResponse registerUser(RegisterUserRequest request) throws RecipeAppException;
 
-    LoginResponse login(LoginRequest request);
+    LoginResponse login(LoginRequest request) throws RecipeAppException;
 
-    LogoutResponse logout(LogoutRequest request);
+    LogoutResponse logout(LogoutRequest request) throws RecipeAppException;
 
 }
