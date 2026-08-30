@@ -1,6 +1,7 @@
 package dev.fantasma.recipeSharingApp.data.models;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
@@ -11,6 +12,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
+    private String email;
     private String password;
     private boolean loggedIn;
 }

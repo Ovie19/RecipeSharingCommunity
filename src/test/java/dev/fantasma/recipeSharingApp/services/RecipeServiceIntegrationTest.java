@@ -2,7 +2,6 @@ package dev.fantasma.recipeSharingApp.services;
 
 import dev.fantasma.recipeSharingApp.data.models.Category;
 import dev.fantasma.recipeSharingApp.data.models.User;
-import dev.fantasma.recipeSharingApp.data.repositories.RecipeRepository;
 import dev.fantasma.recipeSharingApp.data.repositories.UserRepository;
 import dev.fantasma.recipeSharingApp.dtos.requests.AddRecipeRequest;
 import dev.fantasma.recipeSharingApp.dtos.responses.RecipeResponse;
@@ -10,7 +9,6 @@ import dev.fantasma.recipeSharingApp.exceptions.RecipeAppException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
