@@ -8,6 +8,6 @@ import java.util.UUID;
 public class RegisterUserResponse {
     private String message;
     private String username;
-    private UUID id;
+    private Long id;
     private String email;
 }

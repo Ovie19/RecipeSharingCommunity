@@ -1,21 +1,18 @@
 package dev.fantasma.recipeSharingApp.data.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import lombok.Data;
+import jakarta.persistence.*;
 import jakarta.persistence.Id;
-
-import java.util.UUID;
+import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String username;
     private String email;
     private String password;
-    private boolean isLoggedIn;
+    private boolean loggedIn;
 }

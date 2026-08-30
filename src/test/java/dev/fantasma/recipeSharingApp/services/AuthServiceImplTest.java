@@ -8,6 +8,7 @@ import dev.fantasma.recipeSharingApp.dtos.requests.RegisterUserRequest;
 import dev.fantasma.recipeSharingApp.dtos.responses.LoginResponse;
 import dev.fantasma.recipeSharingApp.dtos.responses.LogoutResponse;
 import dev.fantasma.recipeSharingApp.dtos.responses.RegisterUserResponse;
+import dev.fantasma.recipeSharingApp.exceptions.RecipeAppException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,7 +40,7 @@ public class AuthServiceImplTest {
         registerUserRequest.setEmail("destinyrhema@gmail.com");
 
         User user = new User();
-        user.setId(UUID.randomUUID());
+        user.setId(1L);
         user.setUsername(registerUserRequest.getUsername());
         user.setEmail(registerUserRequest.getEmail());
         user.setPassword(registerUserRequest.getPassword());
@@ -64,14 +65,14 @@ public class AuthServiceImplTest {
         registerUserRequest.setEmail("destinyrhema@gmail.com");
 
         User user = new User();
-        user.setId(UUID.randomUUID());
+        user.setId(1L);
         user.setUsername(registerUserRequest.getUsername());
         user.setEmail(registerUserRequest.getEmail());
         user.setPassword(registerUserRequest.getPassword());
 
         when(userRepository.findByEmail(registerUserRequest.getEmail())).thenReturn(Optional.of(user));
 
-        assertThrows(IllegalArgumentException.class,()-> authServiceImpl.registerUser(registerUserRequest),"Email already exists");
+        assertThrows(RecipeAppException.class,()-> authServiceImpl.registerUser(registerUserRequest),"Email already exists");
 
         verify(userRepository, never()).save(any());
 
@@ -85,7 +86,7 @@ public class AuthServiceImplTest {
         registerUserRequest.setEmail("destinyrhema@gmail.com");
 
         User user = new User();
-        user.setId(UUID.randomUUID());
+        user.setId(1L);
         user.setUsername(registerUserRequest.getUsername());
         user.setEmail(registerUserRequest.getEmail());
         user.setPassword(registerUserRequest.getPassword());
@@ -93,21 +94,21 @@ public class AuthServiceImplTest {
         when(userRepository.findByEmail(registerUserRequest.getEmail())).thenReturn(Optional.empty());
         when(userRepository.findByUsername(registerUserRequest.getUsername())).thenReturn(Optional.of(user));
 
-        assertThrows(IllegalArgumentException.class,()-> authServiceImpl.registerUser(registerUserRequest),"Username already exists");
+        assertThrows(RecipeAppException.class,()-> authServiceImpl.registerUser(registerUserRequest),"Username already exists");
 
         verify(userRepository, never()).save(any());
 
     }
 
     @Test
-    public void registerUser_loginWithValidUsernameAndPassword_logsInSuccessfully_test(){
+    public void registerUser_loginWithValidUsernameAndPassword_logsInSuccessfully_test() throws RecipeAppException {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setUsername("rhemaDestiny");
         registerUserRequest.setPassword("1234");
         registerUserRequest.setEmail("destinyrhema@gmail.com");
 
         User user = new User();
-        user.setId(UUID.randomUUID());
+        user.setId(1L);
         user.setUsername(registerUserRequest.getUsername());
         user.setEmail(registerUserRequest.getEmail());
         user.setPassword(registerUserRequest.getPassword());
@@ -136,7 +137,7 @@ public class AuthServiceImplTest {
         registerUserRequest.setEmail("destinyrhema@gmail.com");
 
         User user = new User();
-        user.setId(UUID.randomUUID());
+        user.setId(1L);
         user.setUsername(registerUserRequest.getUsername());
         user.setEmail(registerUserRequest.getEmail());
         user.setPassword(registerUserRequest.getPassword());
@@ -147,7 +148,7 @@ public class AuthServiceImplTest {
 
         when(userRepository.findByUsername(loginRequest.getUsername())).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class,()-> authServiceImpl.login(loginRequest),"Username does not exists");
+        assertThrows(RecipeAppException.class,()-> authServiceImpl.login(loginRequest),"Username does not exists");
         verify(userRepository, never()).save(any());
 
     }
@@ -160,7 +161,7 @@ public class AuthServiceImplTest {
         registerUserRequest.setEmail("destinyrhema@gmail.com");
 
         User user = new User();
-        user.setId(UUID.randomUUID());
+        user.setId(1L);
         user.setUsername(registerUserRequest.getUsername());
         user.setEmail(registerUserRequest.getEmail());
         user.setPassword(registerUserRequest.getPassword());
@@ -171,20 +172,19 @@ public class AuthServiceImplTest {
 
         when(userRepository.findByUsername(loginRequest.getUsername())).thenReturn(Optional.of(user));
 
-        assertThrows(IllegalArgumentException.class,()-> authServiceImpl.login(loginRequest),"Invalid password");
+        assertThrows(RecipeAppException.class,()-> authServiceImpl.login(loginRequest),"Invalid password");
         verify(userRepository, never()).save(any());
-
     }
 
     @Test
-    public void logoutUser_withValidUsername_logoutSuccessfully_test(){
+    public void logoutUser_withValidUsername_logoutSuccessfully_test() throws RecipeAppException {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setUsername("rhemaDestiny");
         registerUserRequest.setPassword("1234");
         registerUserRequest.setEmail("destinyrhema@gmail.com");
 
         User user = new User();
-        user.setId(UUID.randomUUID());
+        user.setId(1L);
         user.setUsername(registerUserRequest.getUsername());
         user.setEmail(registerUserRequest.getEmail());
         user.setPassword(registerUserRequest.getPassword());
@@ -197,7 +197,6 @@ public class AuthServiceImplTest {
         LogoutResponse logoutResponse = authServiceImpl.logout(logoutRequest);
         assertEquals("Logged out successfully", logoutResponse.getMessage() );
         verify(userRepository).save(any(User.class));
-
     }
 
     @Test
@@ -208,7 +207,7 @@ public class AuthServiceImplTest {
         registerUserRequest.setEmail("destinyrhema@gmail.com");
 
         User user = new User();
-        user.setId(UUID.randomUUID());
+        user.setId(1L);
         user.setUsername(registerUserRequest.getUsername());
         user.setEmail(registerUserRequest.getEmail());
         user.setPassword(registerUserRequest.getPassword());
@@ -217,10 +216,7 @@ public class AuthServiceImplTest {
         logoutRequest.setUsername("rhema");
         when(userRepository.findByUsername(logoutRequest.getUsername())).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class,()-> authServiceImpl.logout(logoutRequest),"Invalid username");
+        assertThrows(RecipeAppException.class,()-> authServiceImpl.logout(logoutRequest),"Invalid username");
         verify(userRepository, never()).save(any());
-
     }
-
-
 }

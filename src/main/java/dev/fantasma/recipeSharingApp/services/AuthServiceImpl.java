@@ -8,6 +8,7 @@ import dev.fantasma.recipeSharingApp.dtos.requests.RegisterUserRequest;
 import dev.fantasma.recipeSharingApp.dtos.responses.LoginResponse;
 import dev.fantasma.recipeSharingApp.dtos.responses.LogoutResponse;
 import dev.fantasma.recipeSharingApp.dtos.responses.RegisterUserResponse;
+import dev.fantasma.recipeSharingApp.exceptions.RecipeAppException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,12 +23,12 @@ public class AuthServiceImpl implements AuthService{
 
 
     @Override
-    public RegisterUserResponse registerUser(RegisterUserRequest request){
+    public RegisterUserResponse registerUser(RegisterUserRequest request) throws RecipeAppException {
         Optional<User> foundUserViaMail = userRepository.findByEmail(request.getEmail());
-        if(foundUserViaMail.isPresent()) throw new IllegalArgumentException("Email already exists");
+        if(foundUserViaMail.isPresent()) throw new RecipeAppException("Email already exists");
 
         Optional<User> foundUserViaUsername = userRepository.findByUsername(request.getUsername());
-        if(foundUserViaUsername.isPresent()) throw new IllegalArgumentException("Username already exists");
+        if(foundUserViaUsername.isPresent()) throw new RecipeAppException("Username already exists");
 
         User user = new User();
         user.setUsername(request.getUsername());
@@ -44,11 +45,11 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public LoginResponse login(LoginRequest request){
+    public LoginResponse login(LoginRequest request) throws RecipeAppException {
         Optional<User> foundUser = userRepository.findByUsername(request.getUsername());
-        if(foundUser.isEmpty()) throw new IllegalArgumentException("Username does not exists");
+        if(foundUser.isEmpty()) throw new RecipeAppException("Username does not exists");
         User user = foundUser.get();
-        if(!user.getPassword().equals(request.getPassword())) throw new IllegalArgumentException("Invalid password");
+        if(!user.getPassword().equals(request.getPassword())) throw new RecipeAppException("Invalid Credentials");
         user.setLoggedIn(true);
         user = userRepository.save(user);
 
@@ -61,9 +62,9 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public LogoutResponse logout(LogoutRequest request){
+    public LogoutResponse logout(LogoutRequest request) throws RecipeAppException {
         Optional<User> foundUser = userRepository.findByUsername(request.getUsername());
-        if(foundUser.isEmpty()) throw new IllegalArgumentException("Invalid username");
+        if(foundUser.isEmpty()) throw new RecipeAppException("Invalid username");
         User user = foundUser.get();
         user.setLoggedIn(false);
         user = userRepository.save(user);
