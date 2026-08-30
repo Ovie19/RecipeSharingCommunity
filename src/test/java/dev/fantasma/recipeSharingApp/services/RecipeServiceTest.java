@@ -84,6 +84,12 @@ class RecipeServiceTest {
     }
 
     @Test
+    void addRecipe_invalidRecipeCategoryThrowsExceptionTest() {
+        addRecipeRequest.setCategory(null);
+        assertThrows(RecipeAppException.class, () -> recipeService.addRecipe(testUserId, addRecipeRequest));
+    }
+
+    @Test
     void addRecipe_recipeIngredientsIsNullThrowsExceptionTest() {
         addRecipeRequest.setIngredients(null);
         assertThrows(RecipeAppException.class, () -> recipeService.addRecipe(testUserId, addRecipeRequest));

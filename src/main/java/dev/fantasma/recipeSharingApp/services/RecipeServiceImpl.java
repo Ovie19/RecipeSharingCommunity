@@ -21,7 +21,6 @@ import static dev.fantasma.recipeSharingApp.utils.Validator.validate;
 public class RecipeServiceImpl implements RecipeService {
 
     private RecipeRepository recipeRepository;
-
     private UserRepository userRepository;
 
     @Override

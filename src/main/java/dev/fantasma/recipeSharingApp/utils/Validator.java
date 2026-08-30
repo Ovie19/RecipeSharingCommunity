@@ -15,6 +15,7 @@ public class Validator {
         validateField(request.getIngredients(), "Recipe Ingredients");
         validateField(request.getInstructions(), "Recipe Instructions");
         validateField(request.getPreparationTime(), "Preparation Time");
+        if (request.getCategory() == null) throw new RecipeAppException("Recipe Category cannot be null");
     }
 
     public static void validateField(String value, String fieldName) throws RecipeAppException {
